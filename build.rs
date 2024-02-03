@@ -1,7 +1,19 @@
 use std::env;
 use std::path::PathBuf;
+use std::process::Command;
 
 fn main() {
+
+
+    Command::new("bash")
+        .arg("-c")
+        .arg("cd rapidsnark && ./build_lib.sh")
+        .output()
+        .expect("Failed to build c++ library");
+
+
+
+
     let libdir_path = PathBuf::from("rapidsnark/package/lib")
     // Canonicalize the path as `rustc-link-search` requires an absolute
     // path.
