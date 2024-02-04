@@ -61,7 +61,7 @@ fn main() {
 
     // Tell cargo to tell rustc to link the system bzip2
     // shared library.
-    println!("cargo:rustc-link-lib=rapidsnark");
+    println!("cargo:rustc-link-lib=static=rapidsnark");
 
     // println!("cargo:rustc-link-lib=c++"); // This is needed on macos
     println!("cargo:rustc-link-lib=stdc++"); // This is needed on linux (will error on macos)
