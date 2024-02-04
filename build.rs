@@ -3,13 +3,22 @@ use std::path::PathBuf;
 use std::process::Command;
 
 fn main() {
+    println!("{}", env::current_dir().expect("Couldn't get working dir.").to_str().expect("couldn't convert pathbuf to str."));
+    println!("Hi!");
+    println!("Hi!");
+    println!("Hi!");
+    println!("Hi!");
+    println!("Hi!");
+    println!("Hi!");
+    println!("Hi!");
+    println!("Hi!");
 
 
-    Command::new("bash")
+    println!("{:?}", Command::new("bash")
         .arg("-c")
         .arg("cd rapidsnark && ./build_lib.sh")
         .output()
-        .expect("Failed to build c++ library");
+        .expect("Failed to build c++ library"));
 
 
 
