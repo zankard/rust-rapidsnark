@@ -10,24 +10,33 @@ mod cpp {
 }
 
 use std::ffi::{CString, CStr};
+use thiserror::Error;
 
 
 pub type ProverResponse<'a> = Result<&'a str, ProverError>;
 
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum ProverInitError {
+    #[error("Problem loading the prover key")]
     ZKeyFileLoadError,
+    #[error("Prover key is using an unsupported curve")]
     UnsupportedZKeyCurve,
+    #[error("Unknown error")]
     Unknown
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum ProverError {
+    #[error("Prover is not ready")]
     ProverNotReady,
+    #[error("Invalid input")]
     InvalidInput,
+    #[error("There was a problem with the witness generation binary")]
     WitnessGenerationBinaryProblem,
+    #[error("Witness generation outputted with an invalid curve")]
     WitnessGenerationInvalidCurve,
+    #[error("Unknown error: {0}")]
     Unknown(&'static str)
 }
 
