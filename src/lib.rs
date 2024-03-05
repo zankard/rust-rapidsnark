@@ -72,10 +72,10 @@ impl FullProver {
 
     pub fn prove(
         &mut self,
-        input: &str,
+        witness_file_path: &str,
     ) -> Result<(&str, cpp::ProverResponseMetrics), ProverError> {
-        let input_cstr = CString::new(input).expect("CString::new failed");
-        let response = unsafe { self._full_prover.prove(input_cstr.as_ptr()) };
+        let witness_file_path_cstr = CString::new(witness_file_path).expect("CString::new failed");
+        let response = unsafe { self._full_prover.prove(witness_file_path_cstr.as_ptr()) };
         match response.type_ {
             cpp::ProverResponseType_SUCCESS => unsafe {
                 Ok((
