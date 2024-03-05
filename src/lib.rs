@@ -50,14 +50,12 @@ pub struct FullProver {
 
 impl FullProver {
     pub fn new(
-        zkey_path: &str,
-        witness_gen_binary_folder_path: &str,
+        zkey_path: &str
     ) -> Result<FullProver, ProverInitError> {
         let zkey_path_cstr = CString::new(zkey_path).expect("CString::new failed");
-        let wgbfp_cstr = CString::new(witness_gen_binary_folder_path).expect("CString::new failed");
         let full_prover = unsafe {
             FullProver {
-                _full_prover: cpp::FullProver::new(zkey_path_cstr.as_ptr(), wgbfp_cstr.as_ptr()),
+                _full_prover: cpp::FullProver::new(zkey_path_cstr.as_ptr()),
             }
         };
         match full_prover._full_prover.state {
@@ -91,9 +89,6 @@ impl FullProver {
                 )),
                 cpp::ProverError_PROVER_NOT_READY => Err(ProverError::ProverNotReady),
                 cpp::ProverError_INVALID_INPUT => Err(ProverError::InvalidInput),
-                cpp::ProverError_WITNESS_GENERATION_BINARY_PROBLEM => {
-                    Err(ProverError::WitnessGenerationBinaryProblem)
-                },
                 cpp::ProverError_WITNESS_GENERATION_INVALID_CURVE => {
                     Err(ProverError::WitnessGenerationInvalidCurve)
                 },
