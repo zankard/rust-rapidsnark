@@ -69,7 +69,7 @@ impl FullProver {
     }
 
     pub fn prove(
-        &mut self,
+        &self,
         witness_file_path: &str,
     ) -> Result<(&str, cpp::ProverResponseMetrics), ProverError> {
         let witness_file_path_cstr = CString::new(witness_file_path).expect("CString::new failed");
