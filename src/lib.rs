@@ -32,8 +32,6 @@ pub enum ProverInitError {
 
 #[derive(Debug, Error)]
 pub enum ProverError {
-    #[error("Prover is not ready")]
-    ProverNotReady,
     #[error("Invalid input")]
     InvalidInput,
     #[error("There was a problem with the witness generation binary")]
@@ -87,7 +85,7 @@ impl FullProver {
                 cpp::ProverError_NONE => Err(ProverError::Unknown(
                     "c++ rapidsnark prover returned \"error\" response type but error is \"none\"",
                 )),
-                cpp::ProverError_PROVER_NOT_READY => Err(ProverError::ProverNotReady),
+                cpp::ProverError_PROVER_NOT_READY => panic!("Somehow called prove on an uninitialized prover (this shouldn't ever happen)"),
                 cpp::ProverError_INVALID_INPUT => Err(ProverError::InvalidInput),
                 cpp::ProverError_WITNESS_GENERATION_INVALID_CURVE => {
                     Err(ProverError::WitnessGenerationInvalidCurve)
