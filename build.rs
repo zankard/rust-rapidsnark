@@ -74,10 +74,6 @@ fn os_specific_printlns() {
 fn os_specific_printlns() {
     println!("cargo:rustc-link-lib=stdc++"); // This is needed on linux (will error on macos)
     println!("cargo:rustc-link-search=native=/usr/lib/llvm-14/lib");
-    println!("cargo:rustc-link-lib=dylib=omp");
-    println!("cargo:rustc-link-lib=dylib=gomp");
-
-    println!("cargo:rustc-link-arg=-fopenmp");
 }
 
 #[cfg(not(target_os = "linux"))]
@@ -155,22 +151,37 @@ fn build_bindings() -> bindgen::Bindings {
         // Tell cargo to invalidate the built crate whenever any of the
         // included header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
-        .clang_arg("-fopenmp")
-        .clang_arg("-L/usr/lib/llvm-14/lib")
+        .clang_arg("-L/usr/lib/llvm-16/lib")
+        .clang_arg("-I/usr/lib/llvm-16/lib/clang/14.0.6/include")
+        .clang_arg("-I/usr/include/c++/10/")
+        .clang_arg("-I/usr/include/x86_64-linux-gnu/c++/10/")
         .clang_arg("-I./rapidsnark/package/include")
-        .clang_arg("-I/usr/lib/llvm-14/lib/clang/14.0.6/include")
-        .clang_arg("-I/usr/include/c++/12/")
-        .clang_arg("-I/usr/include/x86_64-linux-gnu/c++/12/")
         .clang_arg("-I./rapidsnark/depends/json/single_include")
+        .clang_arg("-I./rapidsnark/depends/gmp/package_macos_arm64/include")
+        .clang_arg("-I./rapidsnark/depends/tbb/oneTBB/build/installed/include")
         .clang_arg("-I./rapidsnark/depends/ffiasm/c")
         .clang_arg("-I./rapidsnark/build")
         .clang_arg("-I./rapidsnark/src")
         .clang_arg("-std=c++17")
         .clang_arg("-stdlib=libc++")
         .blocklist_file("alt_bn128.hpp")
-        .blocklist_file("groth16.hpp")
         .blocklist_file("binfile_utils.hpp")
         .blocklist_file("curve.hpp")
+        .blocklist_file("exp.hpp")
+        .blocklist_file("f2field.hpp")
+        .blocklist_file("fft.hpp")
+        .blocklist_file("fileloader.hpp")
+        .blocklist_file("groth16.hpp")
+        .blocklist_file("logger.hpp")
+        .blocklist_file("logging.hpp")
+        .blocklist_file("misc.hpp")
+        .blocklist_file("multiexp.hpp")
+        .blocklist_file("naf.hpp")
+        .blocklist_file("random_generator.hpp")
+        .blocklist_file("scope_guard.hpp")
+        .blocklist_file("spinlock.hpp")
+        .blocklist_file("splitparstr.hpp")
+        .blocklist_file("wtns_utils.hpp")
         .blocklist_file("zkey_utils.hpp")
         .allowlist_file("fullprover.hpp")
         .allowlist_type("FullProver")
