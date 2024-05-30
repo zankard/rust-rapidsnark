@@ -37,8 +37,6 @@ fn main() {
         println!("cargo:rustc-link-search=native={}", std_cpp_lib_path);
     }
 
-    println!("cargo:rustc-link-lib=dylib=gmp");
-
     let libdir_path = PathBuf::from("rapidsnark/package/lib")
         // Canonicalize the path as `rustc-link-search` requires an absolute
         // path.
@@ -50,6 +48,9 @@ fn main() {
     // Tell cargo to tell rustc to link the system bzip2
     // shared library.
     println!("cargo:rustc-link-lib=static=rapidsnark-fr-fq");
+
+    println!("cargo:rustc-link-lib=dylib=gmp");
+    println!("cargo:rustc-link-lib=dylib=tbb");
 
     os_specific_printlns();
 
@@ -74,6 +75,7 @@ fn os_specific_printlns() {
 fn os_specific_printlns() {
     println!("cargo:rustc-link-lib=stdc++"); // This is needed on linux (will error on macos)
     println!("cargo:rustc-link-search=native=/usr/lib/llvm-14/lib");
+    println!("cargo:rustc-link-search=native=./rapidsnark/package/lib");
 }
 
 #[cfg(not(target_os = "linux"))]
@@ -151,10 +153,11 @@ fn build_bindings() -> bindgen::Bindings {
         // Tell cargo to invalidate the built crate whenever any of the
         // included header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
-        .clang_arg("-L/usr/lib/llvm-14/lib")
-        .clang_arg("-I/usr/lib/llvm-14/lib/clang/14.0.6/include")
-        .clang_arg("-I/usr/include/c++/12/")
-        .clang_arg("-I/usr/include/x86_64-linux-gnu/c++/12/")
+        .clang_arg("-L./rapidsnark/package/lib")
+        .clang_arg("-L/usr/lib/llvm-16/lib")
+        .clang_arg("-I/usr/lib/llvm-16/lib/clang/14.0.6/include")
+        .clang_arg("-I/usr/include/c++/10/")
+        .clang_arg("-I/usr/include/x86_64-linux-gnu/c++/10/")
         .clang_arg("-I./rapidsnark/package/include")
         .clang_arg("-I./rapidsnark/depends/json/single_include")
         .clang_arg("-I./rapidsnark/depends/gmp/package_macos_arm64/include")
