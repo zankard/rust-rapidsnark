@@ -47,9 +47,7 @@ pub struct FullProver {
 }
 
 impl FullProver {
-    pub fn new(
-        zkey_path: &str
-    ) -> Result<FullProver, ProverInitError> {
+    pub fn new(zkey_path: &str) -> Result<FullProver, ProverInitError> {
         let zkey_path_cstr = CString::new(zkey_path).expect("CString::new failed");
         let full_prover = unsafe {
             FullProver {
@@ -61,7 +59,7 @@ impl FullProver {
             cpp::FullProverState_ZKEY_FILE_LOAD_ERROR => Err(ProverInitError::ZKeyFileLoadError),
             cpp::FullProverState_UNSUPPORTED_ZKEY_CURVE => {
                 Err(ProverInitError::UnsupportedZKeyCurve)
-            },
+            }
             _ => Err(ProverInitError::Unknown),
         }
     }
@@ -85,11 +83,13 @@ impl FullProver {
                 cpp::ProverError_NONE => Err(ProverError::Unknown(
                     "c++ rapidsnark prover returned \"error\" response type but error is \"none\"",
                 )),
-                cpp::ProverError_PROVER_NOT_READY => panic!("Somehow called prove on an uninitialized prover (this shouldn't ever happen)"),
+                cpp::ProverError_PROVER_NOT_READY => panic!(
+                    "Somehow called prove on an uninitialized prover (this shouldn't ever happen)"
+                ),
                 cpp::ProverError_INVALID_INPUT => Err(ProverError::InvalidInput),
                 cpp::ProverError_WITNESS_GENERATION_INVALID_CURVE => {
                     Err(ProverError::WitnessGenerationInvalidCurve)
-                },
+                }
                 _ => Err(ProverError::Unknown(
                     "c++ rapidsnark prover returned an unknown error code",
                 )),
@@ -106,5 +106,16 @@ impl Drop for FullProver {
         unsafe {
             self._full_prover.destruct();
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn dummy_prove_test() {
+        // let prover = crate::FullProver::new("../zkey.zkey").expect("failed to initialize prover");
+        // let _result = prover.prove("../witness.wtns");
+        assert_eq!(2 + 2, 4);
     }
 }
