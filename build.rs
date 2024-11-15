@@ -23,6 +23,10 @@ fn main() {
     // Tell cargo to tell rustc to link the system `clang`
     // shared library.
     println!("cargo:rerun-if-env-changed=LIBCLANG_PATH");
+    println!("cargo:rerun-if-changed=rapidsnark/src");
+    println!("cargo:rerun-if-changed=rapidsnark/CMakeLists.txt");
+    println!("cargo:rerun-if-changed=rapidsnark/build_lib.sh");
+    println!("cargo:rerun-if-changed=rapidsnark/build_tbb.sh");
     println!("cargo:rerun-if-env-changed=LIBCLANG_STATIC_PATH");
     println!("cargo:rerun-if-env-changed=OPENMP_LIBRARY_PATH");
 
