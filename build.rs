@@ -54,7 +54,7 @@ fn main() {
     println!("cargo:rustc-link-lib=static=rapidsnark-fr-fq");
 
     println!("cargo:rustc-link-lib=dylib=gmp");
-    // println!("cargo:rustc-link-lib=dylib=tbb");
+    println!("cargo:rustc-link-lib=dylib=tbb");
 
     os_specific_printlns();
 
