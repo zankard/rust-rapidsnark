@@ -15,7 +15,7 @@ fn main() {
         "{:?}",
         Command::new("bash")
             .arg("-c")
-            .arg("cd rapidsnark && ./build_tbb.sh && ./build_lib.sh")
+            .arg("cd rapidsnark && ./build_lib.sh")
             .output()
             .expect("Failed to build c++ library")
     );
@@ -26,7 +26,7 @@ fn main() {
     println!("cargo:rerun-if-changed=rapidsnark/src");
     println!("cargo:rerun-if-changed=rapidsnark/CMakeLists.txt");
     println!("cargo:rerun-if-changed=rapidsnark/build_lib.sh");
-    println!("cargo:rerun-if-changed=rapidsnark/build_tbb.sh");
+    // println!("cargo:rerun-if-changed=rapidsnark/build_tbb.sh");
     println!("cargo:rerun-if-env-changed=LIBCLANG_STATIC_PATH");
     println!("cargo:rerun-if-env-changed=OPENMP_LIBRARY_PATH");
 
@@ -54,7 +54,7 @@ fn main() {
     println!("cargo:rustc-link-lib=static=rapidsnark-fr-fq");
 
     println!("cargo:rustc-link-lib=dylib=gmp");
-    println!("cargo:rustc-link-lib=dylib=tbb");
+    // println!("cargo:rustc-link-lib=dylib=tbb");
 
     os_specific_printlns();
 
@@ -102,7 +102,7 @@ fn build_bindings() -> bindgen::Bindings {
         .clang_arg("-I./rapidsnark/package/include")
         .clang_arg("-I./rapidsnark/depends/json/single_include")
         .clang_arg("-I./rapidsnark/depends/gmp/package_macos_arm64/include")
-        .clang_arg("-I./rapidsnark/depends/tbb/oneTBB/build/installed/include")
+        // .clang_arg("-I./rapidsnark/depends/tbb/oneTBB/build/installed/include")
         .clang_arg("-I./rapidsnark/depends/ffiasm/c")
         .clang_arg("-I./rapidsnark/build")
         .clang_arg("-I./rapidsnark/src")
@@ -165,7 +165,7 @@ fn build_bindings() -> bindgen::Bindings {
         .clang_arg("-I./rapidsnark/package/include")
         .clang_arg("-I./rapidsnark/depends/json/single_include")
         .clang_arg("-I./rapidsnark/depends/gmp/package_macos_arm64/include")
-        .clang_arg("-I./rapidsnark/depends/tbb/oneTBB/build/installed/include")
+        //.clang_arg("-I./rapidsnark/depends/tbb/oneTBB/build/installed/include")
         .clang_arg("-I./rapidsnark/depends/ffiasm/c")
         .clang_arg("-I./rapidsnark/build")
         .clang_arg("-I./rapidsnark/src")
