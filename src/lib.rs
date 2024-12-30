@@ -67,7 +67,7 @@ impl FullProver {
     pub fn prove(
         &self,
         witness_file_path: &str,
-    ) -> Result<(&str, cpp::ProverResponseMetrics), ProverError> {
+    ) -> Result<(&str, &str, cpp::ProverResponseMetrics), ProverError> {
         let witness_file_path_cstr = CString::new(witness_file_path).expect("CString::new failed");
         let response = unsafe { self._full_prover.prove(witness_file_path_cstr.as_ptr()) };
         match response.type_ {
@@ -76,6 +76,9 @@ impl FullProver {
                     CStr::from_ptr(response.raw_json)
                         .to_str()
                         .expect("CStr::to_str failed"),
+                    CStr::from_ptr(response.raw_public_json)
+                        .to_str()
+                        .expect("CStr::to_stgr failed"),
                     response.metrics,
                 ))
             },
